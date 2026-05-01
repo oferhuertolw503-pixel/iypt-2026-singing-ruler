@@ -1,5 +1,9 @@
 # MATLAB User Workflow
 
+> 当前推荐主线：见
+> [`MATLAB_AUTOMATION_SAFE_PATH.md`](MATLAB_AUTOMATION_SAFE_PATH.md)。
+> 日常自动化优先使用 `matlab.exe -batch` 处理已有 CSV 的 manifest；缺 CSV 且需要 COMSOL/LiveLink 的任务不由 Codex 自动执行。
+
 ## Mandatory Rules
 
 1. Codex does not start MATLAB.
@@ -9,6 +13,30 @@
 5. If a MATLAB postprocess fails, retry the same manifest after code fixes. Do not replace the workflow with a new one.
 6. The 3D real-air line follows the same rule: use `linear_acoustic_field_3d_air_matlab_manifest.json` as the only formal MATLAB entry.
 7. Do not auto-launch MATLAB for the 3D line; the user starts MATLAB manually and runs the manifest.
+8. Codex must not configure, repair, bypass, or depend on non-official COMSOL licensing. COMSOL-dependent work is treated as a user-controlled data production step.
+
+## Stable Automation Path
+
+Preferred no-manual-MATLAB command:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_full_matlab_automation.ps1
+```
+
+This command prepares the manifest queue, runs MATLAB through `matlab.exe -batch`, skips COMSOL-dependent manifests without CSV, and writes:
+
+```text
+outputs/automation/matlab_full_automation_report.md
+```
+
+Use Codex/MATLAB automation for manifests that already have required CSV files:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_matlab_model.ps1 `
+  -ManifestPath .\outputs\linear\acoustic_field\logs\linear_acoustic_field_matlab_manifest.json
+```
+
+If required CSV files are missing, stop the automated run and generate/export the COMSOL data first in a user-controlled local session.
 
 ## Standard Manual Flow
 

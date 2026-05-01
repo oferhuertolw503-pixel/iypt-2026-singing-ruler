@@ -2,11 +2,10 @@
   "servers": {
     "matlab": {
       "type": "stdio",
-      "command": "C:\\Users\\OMEN.LAPTOP-8C8PH934\\.local\\bin\\matlab-mcp-core-server.exe",
+      "command": "C:\\Users\\OMEN.LAPTOP-8C8PH934\\.codex\\bin\\matlab-mcp-core-server-win64.exe",
       "args": [
         "--matlab-root=D:\\Program Files\\Matlab R2025a",
         "--matlab-display-mode=nodesktop",
-        "--matlab-session-mode=existing",
         "--initial-working-folder=C:\\Users\\OMEN.LAPTOP-8C8PH934\\code\\cupt\\the_singing_ruler",
         "--disable-telemetry=true"
       ]

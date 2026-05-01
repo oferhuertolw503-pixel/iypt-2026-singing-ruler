@@ -8,6 +8,10 @@ PowerShell/COMSOL build -> raw CSV outputs -> MATLAB manifest postprocess -> fig
 
 The goal is to make MATLAB development more reliable, testable, and easier to debug without breaking the existing rule that MATLAB is started manually by the user.
 
+For the current safe automation boundary, see
+[`MATLAB_AUTOMATION_SAFE_PATH.md`](MATLAB_AUTOMATION_SAFE_PATH.md).
+The practical rule is: automate MATLAB batch postprocessing and tests; keep COMSOL/LiveLink as a user-controlled data production step unless a fully legitimate, stable COMSOL environment is explicitly available.
+
 ## Installed MATLAB Tooling
 
 Official MathWorks resources were installed locally under:
@@ -81,6 +85,14 @@ Use this sequence for MATLAB work in this project:
 3. Run static checks before executing expensive COMSOL/MATLAB jobs.
 4. Run small function-level tests before full study postprocess.
 5. Only trust plots/tables generated from completed COMSOL CSV outputs.
+
+Current automation ladder:
+
+1. Prefer MATLAB MCP tools when a fresh Codex session exposes them.
+2. Fall back to `matlab.exe -batch` when MCP tools are unavailable.
+3. Run `scripts/run_matlab_model.ps1` only for manifests with complete CSV inputs.
+4. Stop before COMSOL-dependent manifests; generate/export CSV in a controlled local COMSOL session first.
+5. Never make the correctness of MATLAB automation depend on bypassing COMSOL licensing or authentication.
 
 Recommended MATLAB startup commands:
 

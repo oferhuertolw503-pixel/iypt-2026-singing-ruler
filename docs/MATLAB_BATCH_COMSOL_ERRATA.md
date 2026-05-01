@@ -7,7 +7,7 @@
 | OS | Windows 11 Home China 10.0.26200 |
 | MATLAB | 2025a (`D:\Program Files\Matlab R2025a`) |
 | COMSOL | 6.4 (`D:\Program Files\COMSOL64`) |
-| 许可证 | 本地节点锁定 (SSQ) |
+| COMSOL 授权边界 | 不作为 Codex 自动化依赖；Codex 不配置、修复、绕过或验证非官方授权 |
 
 ## 测试目标
 
@@ -75,3 +75,15 @@ MATLAB 2025a 在 headless 模式下，JVM 无法正确初始化 COMSOL 6.4 的 E
 **`matlab -batch` 可用于已有 CSV 数据的 manifest（纯后处理），不可用于需要 COMSOL LiveLink 的 manifest。**
 
 需要 COMSOL 连接的 manifest 仍需在交互式 MATLAB 会话中手动执行。
+
+## 正常自动化修正方案
+
+本纠错日志不是 COMSOL 许可证或认证绕过指南。后续自动化以
+[`MATLAB_AUTOMATION_SAFE_PATH.md`](MATLAB_AUTOMATION_SAFE_PATH.md)
+为准：
+
+- Codex 自动执行正版 MATLAB 可完成的工作：batch 后处理、静态检查、单元测试、status/log 检查。
+- COMSOL/LiveLink 只作为用户本机控制的数据生产步骤。
+- 如果 manifest 缺少 CSV，Codex 应停止自动执行并提示先生成 CSV。
+- 不把 COMSOL server 登录失败、许可证失败或认证失败作为需要 Codex 修复的问题。
+- `scripts/run_matlab_model.ps1` 已修正为默认 fail-fast：缺 CSV 的 COMSOL-backed manifest 不再进入 MATLAB batch 重试。

@@ -18,6 +18,8 @@ param(
     [ValidateRange(0, 65535)]
     [int]$LocalComsolPort = 0,
 
+    [switch]$AllowComsolLiveLink,
+
     [string]$MatlabExe = ""
 )
 
@@ -177,32 +179,94 @@ function Find-ReusableLocalComsolPort {
     return 0
 }
 
+function Get-ManifestRequiredCsvPaths {
+    param([object]$Manifest)
+
+    $outputRoot = [string]$Manifest.output_root
+    if ([string]::IsNullOrWhiteSpace($outputRoot) -or -not [System.IO.Path]::IsPathRooted($outputRoot)) {
+        return @()
+    }
+
+    $entryFunction = [string]$Manifest.entry_function
+    $dataDirName = ""
+    $requiredFiles = @()
+
+    switch -Wildcard ($entryFunction) {
+        "*3d_air_from_manifest" {
+            $dataDirName = "data"
+            $requiredFiles = @(
+                "frequencies.csv",
+                "structure_probe_timeseries.csv",
+                "mode_shapes.csv",
+                "mic_pressure_timeseries.csv",
+                "impact_force_timeseries.csv"
+            )
+            break
+        }
+        "*acoustic_field_from_manifest" {
+            $dataDirName = "data"
+            $requiredFiles = @(
+                "frequencies.csv",
+                "tip_timeseries.csv",
+                "mode_shapes.csv",
+                "mic_pressure_timeseries.csv"
+            )
+            break
+        }
+        "*base_from_manifest" {
+            $dataDirName = "results"
+            $requiredFiles = @(
+                "frequencies.csv",
+                "tip_timeseries.csv",
+                "mode_shapes.csv"
+            )
+            break
+        }
+        "*impact_response_from_manifest" {
+            $dataDirName = "results"
+            $requiredFiles = @(
+                "frequencies.csv",
+                "tip_timeseries.csv",
+                "mode_shapes.csv"
+            )
+            break
+        }
+        default {
+            return @()
+        }
+    }
+
+    $dataRoot = Join-Path $outputRoot $dataDirName
+    return @($requiredFiles | ForEach-Object { Join-Path $dataRoot $_ })
+}
+
+function Get-MissingRequiredManifestCsvPaths {
+    param([object]$Manifest)
+
+    $requiredPaths = @(Get-ManifestRequiredCsvPaths -Manifest $Manifest)
+    if ($requiredPaths.Count -eq 0) {
+        return @()
+    }
+
+    return @($requiredPaths | Where-Object { -not (Test-Path -LiteralPath $_) })
+}
+
 function Test-ManifestNeedsLocalComsolServer {
     param([object]$Manifest)
 
     $mphPath = [string]$Manifest.mph_path
-    $outputRoot = [string]$Manifest.output_root
 
-    if ([string]::IsNullOrWhiteSpace($outputRoot) -or -not [System.IO.Path]::IsPathRooted($outputRoot)) {
-        return (-not [string]::IsNullOrWhiteSpace($mphPath))
-    }
-
-    $freqPath = Join-Path $outputRoot "data\frequencies.csv"
-    $tipPath = Join-Path $outputRoot "data\tip_timeseries.csv"
-    $modePath = Join-Path $outputRoot "data\mode_shapes.csv"
-    $micPath = Join-Path $outputRoot "data\mic_pressure_timeseries.csv"
-
-    $hasCoreCsv = (Test-Path -LiteralPath $freqPath) -and (Test-Path -LiteralPath $modePath) -and (Test-Path -LiteralPath $micPath)
-    $hasTip = (Test-Path -LiteralPath $tipPath)
-    if ($hasCoreCsv -and $hasTip) {
+    if ([string]::IsNullOrWhiteSpace($mphPath)) {
         return $false
     }
 
-    if ($hasCoreCsv -and -not [string]::IsNullOrWhiteSpace($mphPath) -and (Test-Path -LiteralPath $mphPath)) {
+    $requiredPaths = @(Get-ManifestRequiredCsvPaths -Manifest $Manifest)
+    if ($requiredPaths.Count -eq 0) {
         return $true
     }
 
-    return $false
+    $missingPaths = @(Get-MissingRequiredManifestCsvPaths -Manifest $Manifest)
+    return ($missingPaths.Count -gt 0)
 }
 
 function Get-ManifestAutomationTimeoutSeconds {
@@ -485,6 +549,50 @@ function Invoke-DirectMatlabBatchMode {
         }
 }
 
+function Stop-BeforeComsolBoundary {
+    param(
+        [string]$ManifestPath,
+        [object]$Manifest,
+        [string]$StatusPath,
+        [string]$LogPath,
+        [string]$EntryFunction
+    )
+
+    $missingPaths = @(Get-MissingRequiredManifestCsvPaths -Manifest $Manifest)
+    $missingText = if ($missingPaths.Count -gt 0) {
+        ($missingPaths | ForEach-Object { "  - $_" }) -join [Environment]::NewLine
+    } else {
+        "  - Required CSV set is unknown for this COMSOL-backed manifest."
+    }
+
+    $details = @(
+        "This manifest is not safe for default MATLAB batch automation because it needs COMSOL/LiveLink data production.",
+        "Default automation stops here before launching MATLAB, COMSOL, mphstart, or ModelUtil.",
+        "",
+        "Missing or unverified CSV inputs:",
+        $missingText,
+        "",
+        "Generate/export the CSV files in a user-controlled local COMSOL session, then rerun the same manifest.",
+        "If you intentionally want to use a fully legitimate LiveLink environment, rerun with -AllowComsolLiveLink or use scripts/run_matlab_manifest_local_port.ps1."
+    ) -join [Environment]::NewLine
+
+    Write-CodexMatlabStatusFile `
+        -StatusPath $StatusPath `
+        -State "failed" `
+        -ManifestPath $ManifestPath `
+        -EntryFunction $EntryFunction `
+        -LogPath $LogPath `
+        -Message "MATLAB automation stopped before the COMSOL/LiveLink boundary because required CSV inputs are missing." `
+        -ErrorReport $details
+
+    throw (Format-MatlabAutomationFailure `
+            -Header "MATLAB automation stopped before COMSOL/LiveLink boundary." `
+            -ManifestPath $ManifestPath `
+            -StatusPath $StatusPath `
+            -LogPath $LogPath `
+            -Details $details)
+}
+
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 
 if ($PSCmdlet.ParameterSetName -eq "legacy") {
@@ -549,6 +657,15 @@ if ($LocalComsolPort -gt 0) {
         -LogPath $logPath `
         -EntryFunction $entryFunction
     return
+}
+
+if ((Test-ManifestNeedsLocalComsolServer -Manifest $manifest) -and -not $AllowComsolLiveLink) {
+    Stop-BeforeComsolBoundary `
+        -ManifestPath $ManifestPath `
+        -Manifest $manifest `
+        -StatusPath $statusPath `
+        -LogPath $logPath `
+        -EntryFunction $entryFunction
 }
 
 if (Test-ManifestNeedsLocalComsolServer -Manifest $manifest) {
