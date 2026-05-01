@@ -1,0 +1,51 @@
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.claude/
+.claude_settings
+AGENTS.md
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+
+# Node modules (if using any markdown linters/processors)
+node_modules/
+package-lock.json
+yarn.lock
+
+# MATLAB Files (if users test prompts locally)
+*.asv
+*.m~
+slprj/
+*.slxc
+*.autosave
+
+# MATLAB Drive metadata files
+.MATLABDriveTag
+
+# Build artifacts
+dist/
+build/
+out/
+
+# MCP configuration files
+.mcp.json

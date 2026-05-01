@@ -1,0 +1,113 @@
+name: Build and Test
+on: [push]
+permissions:
+  contents: read
+
+jobs:
+  bat:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Perform npm tasks
+        run: npm run ci
+      - uses: actions/upload-artifact@v7
+        with:
+          name: built-action
+          path: |
+            **/*
+            !node_modules/
+
+  integ:
+    needs: bat
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            release: latest
+            products: Symbolic_Math_Toolbox
+            check-matlab: matlabVer = ver('matlab'); assert(~isempty(matlabVer));
+            check-toolbox: symbolicVer = ver('symbolic'); assert(~isempty(symbolicVer));
+          - os: ubuntu-latest
+            release: latest-including-prerelease
+            products: Symbolic_Math_Toolbox
+            check-matlab: matlabVer = ver('matlab'); assert(~isempty(matlabVer));
+            check-toolbox: symbolicVer = ver('symbolic'); assert(~isempty(symbolicVer));
+          - os: ubuntu-22.04
+            release: R2021bU2
+            products: |
+              MATLAB
+              Symbolic_Math_Toolbox
+            check-matlab: matlabVer = ver('matlab'); assert(strcmp(matlabVer.Release,'(R2021b)'));
+            check-toolbox: symbolicVer = ver('symbolic'); assert(strcmp(symbolicVer.Release,'(R2021b)'));
+          - os: windows-latest
+            release: latest
+            products: Symbolic_Math_Toolbox
+            check-matlab: matlabVer = ver('matlab'); assert(~isempty(matlabVer));
+            check-toolbox: symbolicVer = ver('symbolic'); assert(~isempty(symbolicVer));
+          # Added pauses in the check commands on macos until g3258674 is fixed
+          - os: macos-latest
+            release: latest
+            products: Symbolic_Math_Toolbox
+            check-matlab: pause(10); matlabVer = ver('matlab'); assert(~isempty(matlabVer));
+            check-toolbox: pause(10); symbolicVer = ver('symbolic'); assert(~isempty(symbolicVer));
+          - os: macos-14
+            release: latest
+            products: Symbolic_Math_Toolbox
+            check-matlab: pause(10); matlabVer = ver('matlab'); assert(~isempty(matlabVer));
+            check-toolbox: pause(10); symbolicVer = ver('symbolic'); assert(~isempty(symbolicVer));
+          - os: macos-14
+            release: R2023a
+            products: Symbolic_Math_Toolbox
+            check-matlab: matlabVer = ver('matlab'); assert(strcmp(matlabVer.Release,'(R2023a)'));
+            check-toolbox: symbolicVer = ver('symbolic'); assert(strcmp(symbolicVer.Release,'(R2023a)'));
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: built-action
+      - name: Install selected products
+        id: setup_matlab
+        uses: ./
+        with:
+          release: ${{ matrix.release }}
+          products: ${{ matrix.products }}
+      - name: Check matlabroot output is set
+        run: 'if [[ "${{ steps.setup_matlab.outputs.matlabroot }}" != *"MATLAB"* ]]; then exit 1; fi'
+        shell: bash
+      - name: Check MATLAB version
+        uses: matlab-actions/run-command@v3
+        with:
+          command: "${{ matrix.check-matlab }}"
+      - name: Check toolbox version
+        uses: matlab-actions/run-command@v3
+        with:
+          command: "${{ matrix.check-toolbox }}"
+      - name: Check NoOp on 2nd install
+        uses: ./
+        with:
+          release: ${{ matrix.release }}
+          products: ${{ matrix.products }}
+      - name: Install additional products
+        if: matrix.os != 'windows-latest'
+        uses: ./
+        with:
+          release: ${{ matrix.release }}
+          products: Image_Processing_Toolbox
+      - name: Check additional product was installed
+        if: matrix.os != 'windows-latest'
+        uses: matlab-actions/run-command@v3
+        with:
+          command: assert(any(strcmp({ver().Name},'Image Processing Toolbox')))
+      - name: Call setup MATLAB again with different release # should not error as in issue 130
+        uses: ./
+        with:
+          release: R2023b
+      - name: Check MATLAB version
+        uses: matlab-actions/run-command@v3
+        with:
+          command: matlabVer = ver('matlab'); assert(strcmp(matlabVer.Release,'(R2023b)'));

@@ -1,0 +1,34 @@
+{
+  "model": "linear_base",
+  "description": "Ideal clamped-free Euler-Bernoulli beam baseline",
+  "comsol_version": "6.4",
+  "module": "Structural Mechanics",
+  "geometry": {
+    "L_total": "0.30[m]",
+    "L_free": "0.18[m]",
+    "b": "0.03[m]",
+    "h": "0.001[m]"
+  },
+  "material": {
+    "rho": "7850[kg/m^3]",
+    "E": "200e9[Pa]",
+    "nu": "0.30"
+  },
+  "boundary": {
+    "root": "ideal_clamp",
+    "tip": "free"
+  },
+  "excitation": {
+    "mode": "impact",
+    "use_impulse": 1,
+    "J": "0.02[N*s]",
+    "tau_imp": "2e-4[s]",
+    "pulse_shape": "square_like"
+  },
+  "studies": {
+    "eigen_modes": 6,
+    "time_end": "1[s]",
+    "time_step": "1e-4[s]"
+  }
+}
+

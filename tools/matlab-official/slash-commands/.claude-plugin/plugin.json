@@ -1,0 +1,28 @@
+{
+  "name": "matlab-slash-commands",
+  "version": "0.2.0",
+  "description": "Slash commands for MATLAB development workflows — documentation, testing, optimization, code analysis, and MCP integration",
+  "author": {
+    "name": "The MathWorks, Inc.",
+    "url": "https://github.com/matlab/slash-commands"
+  },
+  "homepage": "https://github.com/matlab/slash-commands",
+  "repository": "https://github.com/matlab/slash-commands",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "matlab",
+    "slash-commands",
+    "development",
+    "testing",
+    "documentation",
+    "optimization",
+    "code-quality",
+    "mcp"
+  ],
+  "mcp_servers": {
+    "matlab-mcp-core-server": {
+      "description": "Optional. Enables live code execution, Code Analyzer, test running, and toolbox detection. Install from https://github.com/matlab/matlab-mcp-core-server",
+      "required": false
+    }
+  }
+}

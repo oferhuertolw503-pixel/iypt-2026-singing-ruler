@@ -1,0 +1,44 @@
+{
+    "name": "setup-matlab-action",
+    "author": "The MathWorks, Inc.",
+    "version": "3.0.1",
+    "description": "",
+    "type": "module",
+    "main": "lib/index.js",
+    "scripts": {
+        "clean": "rm -rf dist lib",
+        "format": "prettier --write .",
+        "format-check": "prettier --check .",
+        "lint": "eslint \"**/*.ts\" --fix",
+        "build": "tsc",
+        "package": "ncc build src/index.ts -o dist/setup --minify && ncc build src/post.ts -o dist/cache-save --minify",
+        "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+        "all": "npm run format-check && npm run lint && npm test && npm run build && npm run package",
+        "ci": "npm run clean && npm ci && npm run all"
+    },
+    "files": [
+        "lib/"
+    ],
+    "dependencies": {
+        "@actions/cache": "^6.0.0",
+        "@actions/core": "^3.0.0",
+        "@actions/exec": "^3.0.0",
+        "@actions/http-client": "^4.0.0",
+        "@actions/io": "^3.0.2",
+        "@actions/tool-cache": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "@types/node": "^24.3.0",
+        "@typescript-eslint/eslint-plugin": "^8.40.0",
+        "@typescript-eslint/parser": "^8.40.0",
+        "@vercel/ncc": "^0.38.3",
+        "eslint": "^8.57.1",
+        "jest": "^30.0.5",
+        "jest-circus": "^30.0.5",
+        "prettier": "3.6.2",
+        "ts-jest": "^29.4.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.2"
+    }
+}

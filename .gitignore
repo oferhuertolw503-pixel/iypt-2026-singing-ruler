@@ -1,0 +1,40 @@
+# Run outputs (12GB+)
+outputs/
+
+# Runtime isolation (1.4GB+, regenerated on each run)
+runtime/
+
+# Duplicate package
+the_singing_ruler_solver_package/
+
+# Presentations and PDFs
+*.pptx
+*.pdf
+ppt/
+
+# COMSOL model files (large binaries)
+*.mph
+
+# Java build artifacts
+*.class
+*.class.status
+models/**/artifacts/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Temporary / IDE
+.codex_tmp/
+debug.log
+
+# Office temp files
+~$*
+
+# MATLAB temp
+*.m~
+*.asv
+
+# OS files
+Thumbs.db
+.DS_Store
