@@ -50,10 +50,22 @@ function Resolve-MatlabExe {
     if (-not [string]::IsNullOrWhiteSpace($env:TSR_MATLAB_EXE)) {
         $candidates += $env:TSR_MATLAB_EXE
     }
-    $candidates += @(
-        "D:\Program Files\Matlab R2025a\bin\matlab.exe",
-        "D:\Program Files\MATLAB\R2025a\bin\matlab.exe"
+
+    $commonDrives = @("D:", "C:")
+    $commonYears  = @("R2026a", "R2025b", "R2025a", "R2024b", "R2024a")
+    $commonPatterns = @(
+        "Program Files\MATLAB\{0}\bin\matlab.exe",
+        "Program Files\Matlab {0}\bin\matlab.exe",
+        "Program Files (x86)\MATLAB\{0}\bin\matlab.exe"
     )
+
+    foreach ($drive in $commonDrives) {
+        foreach ($year in $commonYears) {
+            foreach ($pattern in $commonPatterns) {
+                $candidates += (Join-Path $drive ($pattern -f $year))
+            }
+        }
+    }
 
     foreach ($candidate in $candidates) {
         if (-not [string]::IsNullOrWhiteSpace($candidate) -and (Test-Path -LiteralPath $candidate)) {
@@ -61,7 +73,13 @@ function Resolve-MatlabExe {
         }
     }
 
-    throw "MATLAB executable not found. Set -MatlabExe or TSR_MATLAB_EXE."
+    $tips = @(
+        "MATLAB executable not found. Try one of the following:",
+        "  1. Set the TSR_MATLAB_EXE environment variable to the full path of matlab.exe",
+        "  2. Pass -MatlabExe 'C:\Program Files\MATLAB\R2025a\bin\matlab.exe' when calling the script",
+        "  3. Verify MATLAB is installed and the version folder matches one of the searched years"
+    )
+    throw ($tips -join [Environment]::NewLine)
 }
 
 function Test-ListeningPort {

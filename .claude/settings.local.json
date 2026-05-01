@@ -10,7 +10,18 @@
       "Bash(git ls-remote *)",
       "Bash(curl *)",
       "Bash(ssh -T -o ConnectTimeout=10 git@github.com)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(where matlab *)",
+      "Read(//d/Program Files/Matlab R2025a/bin/**)",
+      "Read(//d/Program Files/MATLAB/R2025a/bin/**)",
+      "Read(//c/Program Files/MATLAB/R2025a/bin/**)",
+      "Read(//d/Program Files/MATLAB/R2025b/bin/**)",
+      "Read(//d/Program Files/MATLAB/R2026a/bin/**)",
+      "Read(//c/Program Files/MATLAB/R2025b/bin/**)",
+      "Bash(ls outputs/linear/sweep/*/logs/*_matlab_manifest.json)",
+      "Bash(ls outputs/linear/*/logs/*_matlab_status.json)",
+      "Bash(powershell -ExecutionPolicy Bypass -File .\\\\scripts\\\\run_matlab_model.ps1 -ManifestPath \"outputs/linear/acoustic_field/logs/linear_acoustic_field_matlab_manifest.json\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\scripts\\\\run_matlab_model.ps1\" -ManifestPath \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\outputs\\\\linear\\\\acoustic_field\\\\logs\\\\linear_acoustic_field_matlab_manifest.json\")"
     ]
   }
 }
