@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(ls -lh rubber_band_vibration.mp4)",
+      "Bash(ls -lh .claude/settings.local.json)",
+      "Bash(git commit -m ' *)",
+      "Bash(git remote *)",
+      "Bash(gh api *)",
+      "Bash(git ls-remote *)",
+      "Bash(curl *)",
+      "Bash(ssh -T -o ConnectTimeout=10 git@github.com)",
+      "Bash(git push *)"
     ]
   }
 }
