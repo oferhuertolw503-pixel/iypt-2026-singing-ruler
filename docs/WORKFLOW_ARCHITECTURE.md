@@ -2,6 +2,8 @@
 
 > 适用场景：COMSOL 建模 → MATLAB 后处理的三段式仿真项目
 > 本文件描述通用架构，不绑定具体物理模型，可作为同类项目的模板
+>
+> **本文件只描述通用流水线架构；具体到 The Singing Ruler 的当前目标、已有结果和优先级，以 [`PROJECT_RUN_TARGETS.md`](PROJECT_RUN_TARGETS.md) 为准。**
 
 ---
 

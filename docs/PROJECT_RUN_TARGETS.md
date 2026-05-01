@@ -3,6 +3,9 @@
 > 生成日期：2026-05-02
 > 数据来源：本地 `outputs/` 实际扫描结果
 > 用途：给 Claude Code 在本地项目中的执行指引
+>
+> **本文件定义当前 Singing Ruler 项目的具体运行目标和执行边界。
+> 通用流水线架构见 [`WORKFLOW_ARCHITECTURE.md`](WORKFLOW_ARCHITECTURE.md)。**
 
 ## 0. 总原则
 
@@ -61,7 +64,8 @@ models/linear/acoustic_field_3d_air/
 
 CSV：frequencies ✓, structure_probe_timeseries ✓, mode_shapes ✓, mic_pressure_timeseries ✓, impact_force_timeseries ✓, mic_pressure_fft ✓
 
-**此 case 可作为线性基准。**
+在当前已扫描结果中，此 case 可作为默认线性基准。
+如果后续发现参数更接近论文口径的完整 3D air case，应允许更新 baseline_selection_report.md。
 
 ### 2.2 钢尺扫描 (requested_3d_air_coarse_review_light)
 
@@ -146,27 +150,17 @@ outputs/linear/acoustic_field_3d_air/
 
 ## 4. 当前缺口与优先级
 
-### P0：无缺口（当前结果已满足论文核心需求）
+### P0：论文核心图表已有可用数据，但需正式盘点
 
-已有：
-- 钢尺 5 参数扫描（22 case，完整 CSV + 图）
-- 5 种材料音色数据（完整 CSV + 图）
-- 冲量力时程图
-- 论文级 CSV 导出表
+已有 22 个 steel 扫描 case + 5 材料 case 的完整 CSV 和图表。Claude Code 应首先生成正式盘点报告，再据此判断缺口。
 
 ### P1：非钢材料 summary 补全
 
 4 个材料 case 缺少 `summary.json`（PVC、acrylic、satinwood、xuefu_board）。这些 case 已有完整 CSV，MATLAB batch 模式可以直接补生成 summary。
 
-运行命令：
-
-```powershell
-# 逐个补全（有 CSV，batch 可用）
-powershell -ExecutionPolicy Bypass -File .\scripts\run_matlab_model.ps1 `
-  -ManifestPath <manifest_path>
-```
-
-**注意**：需要先为这 4 个 case 创建 manifest。如果没有现成 manifest，应由用户在交互式 MATLAB 中一次性运行后处理。
+约束：
+- 若已有 manifest：直接运行 `run_matlab_model.ps1`。
+- 若没有 manifest：不得凭空生成；应先根据已有 `output_root`、`config_path`、CSV 文件生成 review-only manifest，并在报告中标记为 `reconstructed`。
 
 ### P2：麦克风距离扩展
 
@@ -208,7 +202,22 @@ A_tip / L_free ≥ 0.10：大变形强非线性
 
 ---
 
-## 5. Claude Code 自动化边界
+---
+
+## 5. 下一步最小执行清单
+
+```text
+1. 生成 docs/existing_results_inventory.md
+2. 生成 outputs/_inventory/existing_results_inventory.csv
+3. 生成 docs/baseline_selection_report.md
+4. 检查 4 个非钢材料 summary 是否可由已有 CSV 补全（P1）
+5. 给出 mic_distance 扩展的最小 case 配置建议（P2）
+6. 给出 nonlinear structure-only 的目录和最小模型计划（P3）
+```
+
+---
+
+## 6. Claude Code 自动化边界
 
 ### 可以自动做的事
 
@@ -223,18 +232,24 @@ A_tip / L_free ≥ 0.10：大变形强非线性
 检查 manifest/status 状态
 ```
 
-### 不能自动做的事
+### 不能默认自动做的事
 
 ```text
 启动 COMSOL LiveLink（需交互式 MATLAB）
-构建新的 COMSOL case（需 shell + comsolcompile + comsolbatch）
 配置、修复或绕过 COMSOL 许可证
 在没有 CSV 的 manifest 上运行 matlab -batch
 ```
 
+以下操作需要用户明确授权且环境就绪后才允许：
+
+```text
+构建新的 COMSOL case（shell + comsolcompile + comsolbatch）
+  前提：COMSOL_BIN 可用、许可证可用、目标 case 配置已生成
+```
+
 ---
 
-## 6. 关键文件路径速查
+## 7. 关键文件路径速查
 
 | 用途 | 路径 |
 |---|---|
@@ -250,6 +265,6 @@ A_tip / L_free ≥ 0.10：大变形强非线性
 
 ---
 
-## 7. 一句话目标
+## 8. 一句话目标
 
 **以本地已有 22 个 steel 扫描 case + 5 材料 case 为数据基础，优先用已有 CSV 生成论文所需图表和分析；只在明确缺失时补跑，不重跑已有结果。**
