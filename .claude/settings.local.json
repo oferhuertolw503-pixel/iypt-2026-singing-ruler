@@ -21,7 +21,24 @@
       "Bash(ls outputs/linear/sweep/*/logs/*_matlab_manifest.json)",
       "Bash(ls outputs/linear/*/logs/*_matlab_status.json)",
       "Bash(powershell -ExecutionPolicy Bypass -File .\\\\scripts\\\\run_matlab_model.ps1 -ManifestPath \"outputs/linear/acoustic_field/logs/linear_acoustic_field_matlab_manifest.json\")",
-      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\scripts\\\\run_matlab_model.ps1\" -ManifestPath \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\outputs\\\\linear\\\\acoustic_field\\\\logs\\\\linear_acoustic_field_matlab_manifest.json\")"
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\scripts\\\\run_matlab_model.ps1\" -ManifestPath \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\outputs\\\\linear\\\\acoustic_field\\\\logs\\\\linear_acoustic_field_matlab_manifest.json\")",
+      "Read(//d/Program Files/COMSOL/COMSOL60/Multiphysics/bin/win64/**)",
+      "Read(//c/Program Files/COMSOL/COMSOL60/Multiphysics/bin/win64/**)",
+      "Read(//d/Program Files/**)",
+      "Read(//c/Program Files/**)",
+      "Bash(powershell *)",
+      "WebSearch",
+      "Bash(tasklist)",
+      "Bash(netstat -ano)",
+      "Bash($MATLAB_EXE *)",
+      "Bash(D:\\\\Program Files\\\\Matlab R2025a\\\\bin\\\\matlab.exe *)",
+      "Bash(D:\\\\Program Files\\\\COMSOL64\\\\Multiphysics\\\\bin\\\\win64\\\\comsol.exe mphserver *)",
+      "Bash(taskkill /PID 20940 /F)",
+      "Bash(taskkill /F /IM comsolmphserver.exe)",
+      "Bash(\"D:\\\\Program Files\\\\COMSOL64\\\\Multiphysics\\\\bin\\\\win64\\\\comsolmphserver.exe\" -port 2038 -login never -multi on -silent -tmpdir \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\.codex_tmp\\\\comsol_server\\\\tmp\" -configuration \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\.codex_tmp\\\\comsol_server\\\\configuration\" -data \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\.codex_tmp\\\\comsol_server\\\\data\" -prefsdir \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\.codex_tmp\\\\comsol_server\\\\prefs\" -recoverydir \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\.codex_tmp\\\\comsol_server\\\\recoveries\" -autosave off)",
+      "Bash(\"D:\\\\Program Files\\\\COMSOL64\\\\Multiphysics\\\\bin\\\\win64\\\\comsol.exe\" -status)",
+      "Bash(\"D:\\\\Program Files\\\\COMSOL64\\\\Multiphysics\\\\bin\\\\win64\\\\comsolmphserver.exe\" -port 2038 -multi on -silent -tmpdir \"C:\\\\Users\\\\OMEN.LAPTOP-8C8PH934\\\\code\\\\cupt\\\\the_singing_ruler\\\\.codex_tmp\\\\comsol_server\\\\tmp\" -login never)",
+      "Bash(\"D:\\\\Program Files\\\\Matlab R2025a\\\\bin\\\\matlab.exe\" -batch \"mli='D:\\\\Program Files\\\\COMSOL64\\\\Multiphysics\\\\mli'; addpath\\(mli\\); jarpath=fullfile\\(mli,'..','apiplugins'\\); jars=dir\\(fullfile\\(jarpath,'*.jar'\\)\\); for i=1:numel\\(jars\\); javaaddpath\\(fullfile\\(jarpath,jars\\(i\\).name\\)\\); end; try; mphstart\\('localhost',2038,'D:\\\\Program Files\\\\COMSOL64\\\\Multiphysics','',''\\); catch ME; disp\\(ME.message\\); end; disp\\('DONE'\\)\")"
     ]
   }
 }
