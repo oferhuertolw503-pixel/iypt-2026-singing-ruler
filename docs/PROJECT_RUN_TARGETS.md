@@ -259,9 +259,9 @@ A_tip / L_free ≥ 0.10：大变形强非线性
 | 材料音色数据 | `outputs/requested_3d_air_coarse_review_light/cases/timbre_material/` |
 | 论文 CSV 表 | `outputs/requested_3d_air_coarse_review_light/tables/article_csv/` |
 | 输出图表 | `outputs/requested_3d_air_coarse_review_light/figures/` |
-| MATLAB batch 方案 | `docs/MATLAB_BATCH_WORKFLOW.md` |
-| COMSOL LiveLink 纠错 | `docs/MATLAB_BATCH_COMSOL_ERRATA.md` |
-| MATLAB 用户流程 | `docs/MATLAB_USER_WORKFLOW.md` |
+| GitHub 上传说明 | `docs/GitHub仓库上传说明.md` |
+| MATLAB 自动化方案 | `docs/MATLAB_AUTOMATION.md` |
+| 项目学习手册 | `docs/具体求解方案.md` |
 
 ---
 
