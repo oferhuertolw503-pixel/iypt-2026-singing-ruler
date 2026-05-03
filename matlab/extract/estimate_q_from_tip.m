@@ -27,9 +27,26 @@ function result = estimate_q_from_tip(t_s, w_m)
         return;
     end
 
-    delta = log(peak_vals(1) / peak_vals(end)) / (numel(peak_vals) - 1);
-    if ~(isfinite(delta) && delta > 0)
+    % Start log-decrement from the maximum peak (excludes pre-impact
+    % small peaks and handles multi-modal envelopes where the global
+    % maximum occurs after several cycles).
+    [~, max_i] = max(peak_vals);
+    decay_vals = peak_vals(max_i:end);
+    decay_n = numel(decay_vals);
+    if decay_n < 2
         return;
+    end
+
+    delta = log(decay_vals(1) / decay_vals(end)) / (decay_n - 1);
+    if ~(isfinite(delta) && delta > 0)
+        % Fallback: try least-squares fit of log(amp) vs peak index
+        log_amp = log(decay_vals);
+        x = (0:decay_n - 1)';
+        p = [x, ones(decay_n, 1)] \ log_amp;
+        delta = -p(1);
+        if ~(isfinite(delta) && delta > 0)
+            return;
+        end
     end
 
     result.log_decrement = delta;
