@@ -186,6 +186,7 @@ function Get-ExpectedCommentedCsvHeader {
         "structure_probe_timeseries.csv" { return "% t_s,uz_m" }
         "mic_pressure_timeseries.csv" { return "% t_s,p_pa" }
         "impact_force_timeseries.csv" { return "% t_s,force_z_N" }
+        "tip_timeseries.csv" { return "% t_s,w_m" }
         "mode_shapes.csv" {
             $firstDataLine = Get-Content -LiteralPath $Path -Encoding UTF8 |
                 ForEach-Object { $_.Trim() } |
@@ -261,6 +262,7 @@ function Normalize-ExportedCsvHeaders {
         "structure_probe_timeseries.csv",
         "mic_pressure_timeseries.csv",
         "impact_force_timeseries.csv",
+        "tip_timeseries.csv",
         "mode_shapes.csv"
     ) | ForEach-Object {
         Normalize-ExportedCsvHeader -Path (Join-Path $DataDir $_)

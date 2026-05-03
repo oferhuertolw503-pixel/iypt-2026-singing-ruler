@@ -232,11 +232,13 @@ public class Linear_Acoustic_Field_3D_Air {
     String modeShapePath = new File(dataDir, "mode_shapes.csv").getPath();
     String micPath = new File(dataDir, "mic_pressure_timeseries.csv").getPath();
     String impactForcePath = new File(dataDir, "impact_force_timeseries.csv").getPath();
+    String tipPath = new File(dataDir, "tip_timeseries.csv").getPath();
 
     ensureSolutionDataset(model, "dsetEig", "sol1");
     ensureSolutionDataset(model, "dsetStructTime", "sol2");
     ensureSolutionDataset(model, "dsetAirTime", "sol3");
     ensureCutPoint(model, "cptStruct", "dsetStructTime", "L_free-0.5*h_ruler", "0", "0");
+    ensureCutPoint(model, "cptTip", "dsetStructTime", "L_free", "0", "0");
     ensureCutPoint(model, "cptMic", "dsetAirTime", "mic_x", "mic_y", "mic_z");
 
     exportFrequencyCsv(model, frequencyPath);
@@ -244,6 +246,7 @@ public class Linear_Acoustic_Field_3D_Air {
     exportModeShapesCsv(model, modeShapePath, 6, __MODE_POINTS__);
     exportPointCsv(model, "cptMic", new String[] { "t", "p" }, new String[] { "t_s", "p_pa" }, micPath);
     exportGlobalCsv(model, "dsetStructTime", new String[] { "t", "force_z_total" }, new String[] { "t_s", "force_z_N" }, impactForcePath);
+    exportPointCsv(model, "cptTip", new String[] { "t", "w" }, new String[] { "t_s", "w_m" }, tipPath);
   }
 
   private static void ensureSolutionDataset(Model model, String tag, String solutionTag) {
