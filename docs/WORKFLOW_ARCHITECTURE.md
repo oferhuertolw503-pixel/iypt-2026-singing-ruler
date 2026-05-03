@@ -1,7 +1,7 @@
 ---
 audience: agent
 agent-priority: medium
-last-reviewed: 2026-05-02
+last-reviewed: 2026-05-03
 context-budget: 8KB
 agent-summary: "通用流水线架构文档。Phase 1 Shell 调度 → Phase 2 COMSOL 求解 → Phase 3 MATLAB 后处理。Manifest 协议交接、目录结构、新增模型检查清单"
 ---
@@ -133,7 +133,7 @@ public class Model {
 1. 不凭空指定基准数据。以已有 CSV 和 summary 为准。
 2. 不在没有检查 outputs/ 的情况下重跑。
 3. 不用插值或合成频谱补缺失数据。
-4. COMSOL/LiveLink 不作为默认自动化依赖。
+4. COMSOL/LiveLink 仅在本机正版离线许可证环境和任务卡明确授权下自动化。
 5. 不把 matlab.exe 作为"启动器"。所有 MATLAB 调用走 manifest。
 6. 不把非线性结果混入线性主线。
-7. 有 CSV → batch 可用；无 CSV → 快速失败 + 提示用户。
+7. 有 CSV → MATLAB batch 可用；无 CSV → 仅在任务卡授权时进入 COMSOL/LiveLink 数据生产。

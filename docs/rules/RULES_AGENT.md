@@ -2,9 +2,9 @@
 audience: agent
 agent-priority: high
 canonical-rules: true
-last-reviewed: 2026-05-02
+last-reviewed: 2026-05-03
 context-budget: 5KB
-agent-summary: "Codex/Claude 分工、权限边界、Git/Obsidian/COMSOL 禁区、角色操作边界"
+agent-summary: "Codex/Claude 分工、权限边界、Git/Obsidian/COMSOL 受控自动化边界、角色操作边界"
 ---
 
 # Agent 行为规则
@@ -28,19 +28,19 @@ agent-summary: "Codex/Claude 分工、权限边界、Git/Obsidian/COMSOL 禁区�
 | R202 | 不删除文件 | error | COLLAB §4 |
 | R203 | 不改 docs/，除非任务卡明确列出文档文件 | error | COLLAB §3 |
 | R204 | 不发明新的 MATLAB 入口，优先使用 manifest 工作流 | error | COLLAB §3 |
-| R205 | 不启动 COMSOL、comsolmphserver、mphstart、ModelUtil | error | COLLAB §4 |
+| R205 | 仅在任务卡明确允许时启动 COMSOL、comsolbatch、comsolmphserver、mphstart、ModelUtil | error | COLLAB §4 |
 | R206 | 不配置、修复、绕过或调试 COMSOL 许可证/认证 | error | COLLAB §4 |
-| R207 | 不把 COMSOL/LiveLink 当作 CI 或默认无人值守依赖 | error | COLLAB §5 |
+| R207 | COMSOL/LiveLink 自动化仅限本机正版离线许可证环境，不进入 GitHub Actions/CI | error | COLLAB §5 |
 | R208 | 不运行 taskkill（易误杀用户进程）| warn | COLLAB §4 |
 
 ## R3 COMSOL 边界
 
 | ID | 规则 | 等级 | 来源 |
 |---|---|---|---|
-| R301 | COMSOL 求解、参数扫描、导出 CSV 不由 Agent 默认自动化 | error | AUTOMATION §2 |
+| R301 | COMSOL 求解、参数扫描、导出 CSV 可由 Agent 在任务卡授权下本机自动化 | error | AUTOMATION §2 |
 | R302 | 无 CSV 的 manifest 必须跳过或快速失败（<1s）| error | AUTOMATION §5 |
-| R303 | matlab -batch 不可用于需要 COMSOL LiveLink 的 manifest（已验证 6 轮全部失败）| error | AUTOMATION §9 |
-| R304 | COMSOL 数据生产由用户本机控制，Agent 不负责生产其数据 | warn | AUTOMATION §1 |
+| R303 | MATLAB batch 默认优先使用已有 CSV；需要 LiveLink 时必须由任务卡显式授权 | error | AUTOMATION §9 |
+| R304 | COMSOL 数据生产仅允许写入项目 outputs/、runtime/ 或任务卡指定路径 | warn | AUTOMATION §1 |
 
 ## R4 数据完整性
 

@@ -1,7 +1,7 @@
 ---
 audience: agent
 agent-priority: high
-last-reviewed: 2026-05-02
+last-reviewed: 2026-05-03
 context-budget: 5KB
 agent-summary: "Codex leader + Claude Code worker 执行协议。任务卡格式、验收标准、权限边界。详细规则见 docs/rules/RULES_AGENT.md"
 ---
@@ -18,7 +18,7 @@ agent-summary: "Codex leader + Claude Code worker 执行协议。任务卡格式
 | 角色 | 职责 | 不应负责 |
 |---|---|---|
 | Codex Leader | 需求澄清、方案设计、任务拆分、任务卡下发、边界控制、最终验收、MATLAB 全自动验证、Git/文档/Obsidian 同步 | 不把未定义任务直接丢给 Claude；不跳过验收 |
-| Claude Code Worker | 严格按 Codex 任务卡改代码、补测试、做局部重构、返回变更摘要 | 自行扩大需求、改变架构决策、启动 COMSOL、删除文档、push GitHub |
+| Claude Code Worker | 严格按 Codex 任务卡改代码、补测试、做局部重构、返回变更摘要；在任务卡明确授权时运行本机 COMSOL 自动化 | 自行扩大需求、改变架构决策、未授权启动 COMSOL、删除文档、push GitHub |
 
 推荐执行顺序：
 
@@ -43,7 +43,7 @@ Worker：Claude Code
 - <file/path/two>
 
 禁止：
-- 不要启动 COMSOL
+- 不要启动 COMSOL，除非任务卡明确列出允许的 COMSOL 脚本或命令
 - 不要 git add / commit / push
 - 不要删除文件
 - 不要改 docs，除非本任务明确要求
@@ -74,7 +74,7 @@ Codex 至少检查：
 - `git status --short`
 - diff 是否只覆盖任务范围
 - MATLAB 全自动报告是否 `failed = 0`
-- 是否误触 COMSOL/LiveLink 边界
+- COMSOL/LiveLink 是否只在任务卡授权范围内运行
 
 ## 4. 权限边界
 
@@ -82,4 +82,5 @@ Codex 至少检查：
 
 - Codex 独占：Git 推送、Obsidian 同步、最终验收、全自动 MATLAB
 - Claude Code 独占：按任务卡修改代码、局部测试
-- 谁都不可默认：启动 COMSOL、修许可证、批量 git add
+- 谁都不可默认：修许可证、绕过认证、批量 git add、未授权启动 COMSOL
+- 可显式授权：本机正版离线许可证环境下的 `comsolbatch`、`comsolmphserver`、LiveLink/MATLAB 工作流

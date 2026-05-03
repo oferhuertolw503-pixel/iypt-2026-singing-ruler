@@ -19,7 +19,8 @@ Do:
 
 Do not:
 
-- Do not start COMSOL, `comsolmphserver`, `mphstart`, or `ModelUtil`.
+- Do not start COMSOL, `comsolbatch`, `comsolmphserver`, `mphstart`, or `ModelUtil` unless the task card explicitly allows COMSOL automation.
+- When COMSOL automation is explicitly allowed, use only the local licensed offline COMSOL installation and project scripts named by Codex.
 - Do not configure, repair, bypass, or debug COMSOL licensing/authentication.
 - Do not run `git add`, `git commit`, or `git push`.
 - Do not delete files.
@@ -71,6 +72,12 @@ Checks you may run:
 
 ```text
 <Codex lists exact commands or MCP/slash commands here>
+```
+
+COMSOL allowance:
+
+```text
+<Codex writes "not allowed" or lists exact COMSOL commands/scripts allowed for this task>
 ```
 
 ## Return Format
