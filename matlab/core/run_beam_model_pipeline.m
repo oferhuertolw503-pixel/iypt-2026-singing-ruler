@@ -132,6 +132,8 @@ function result = run_beam_model_pipeline(spec)
         result.solve_owner = "java_batch_mph";
     end
     result.wallclock_export_s = toc(export_timer);
+
+    result = run_derived_metrics(data_dir, figures_dir, result, spec);
 end
 
 function tf = has_solution(model, tag)
@@ -183,8 +185,9 @@ function offline = try_load_java_exported_result(spec, data_dir, figures_dir, ex
 
     freq_path = fullfile(data_dir, 'frequencies.csv');
     tip_path = fullfile(data_dir, 'tip_timeseries.csv');
+    structure_probe_path = fullfile(data_dir, 'structure_probe_timeseries.csv');
     mode_path = fullfile(data_dir, 'mode_shapes.csv');
-    required = {freq_path, tip_path, mode_path};
+    required = {freq_path, mode_path};
 
     include_mic = isfield(spec, "include_mic") && spec.include_mic;
     mic_path = fullfile(data_dir, 'mic_pressure_timeseries.csv');
@@ -197,20 +200,40 @@ function offline = try_load_java_exported_result(spec, data_dir, figures_dir, ex
             return;
         end
     end
+    if ~isfile(tip_path) && ~isfile(structure_probe_path)
+        return;
+    end
 
     freq_table = read_exported_numeric_csv(freq_path);
-    tip_table = read_exported_numeric_csv(tip_path);
+    if isfile(tip_path)
+        tip_table = read_exported_numeric_csv(tip_path);
+        tip_t = tip_table.t_s;
+        tip_w = tip_table.w_m;
+        probe_t = tip_t;
+        probe_uz = tip_w;
+    else
+        tip_table = table();
+        tip_t = zeros(0, 1);
+        tip_w = zeros(0, 1);
+        probe_table = read_exported_numeric_csv(structure_probe_path);
+        probe_t = probe_table.t_s;
+        probe_uz = probe_table.uz_m;
+    end
     mode_table = read_exported_numeric_csv(mode_path);
-
-    tip_t = tip_table.t_s;
-    tip_w = tip_table.w_m;
     freqs = freq_table.freq_hz;
 
     plot_frequency_bar(freq_table, fullfile(figures_dir, 'frequencies_bar.png'));
-    plot_series(tip_t, tip_w, fullfile(figures_dir, 'tip_timeseries.png'), ...
-        'Tip displacement time series', 'Tip displacement w (m)', '#1D3557');
-    plot_fft(tip_t, tip_w, fullfile(figures_dir, 'tip_fft.png'), ...
-        'Tip displacement spectrum', 'Amplitude |W(f)| (m)', 1000);
+    if ~isempty(tip_t)
+        plot_series(tip_t, tip_w, fullfile(figures_dir, 'tip_timeseries.png'), ...
+            'Tip displacement time series', 'Tip displacement w (m)', '#1D3557');
+        plot_fft(tip_t, tip_w, fullfile(figures_dir, 'tip_fft.png'), ...
+            'Tip displacement spectrum', 'Amplitude |W(f)| (m)', 1000);
+    else
+        plot_series(probe_t, probe_uz, fullfile(figures_dir, 'structure_probe_timeseries.png'), ...
+            'Structure probe displacement time series', 'Probe displacement uz (m)', '#1D3557');
+        plot_fft(probe_t, probe_uz, fullfile(figures_dir, 'structure_probe_fft.png'), ...
+            'Structure probe displacement spectrum', 'Amplitude |Uz(f)| (m)', 1000);
+    end
     plot_mode_shapes(mode_table, figures_dir);
 
     mic_table = table();
@@ -223,8 +246,10 @@ function offline = try_load_java_exported_result(spec, data_dir, figures_dir, ex
             'Microphone pressure time series', 'Pressure p (Pa)', '#7A3E9D');
         plot_fft(mic_t, mic_p, fullfile(figures_dir, 'mic_pressure_fft.png'), ...
             'Microphone pressure spectrum', 'Amplitude |P(f)| (Pa)', 1000);
-        q_info = estimate_q_from_tip(tip_t, tip_w);
-        write_json_file(fullfile(data_dir, 'q_estimate.json'), q_info);
+        if ~isempty(tip_t)
+            q_info = estimate_q_from_tip(tip_t, tip_w);
+            write_json_file(fullfile(data_dir, 'q_estimate.json'), q_info);
+        end
     end
 
     result = struct();
@@ -233,6 +258,8 @@ function offline = try_load_java_exported_result(spec, data_dir, figures_dir, ex
     result.tip_table = tip_table;
     result.tip_t = tip_t;
     result.tip_w = tip_w;
+    result.structure_probe_t = probe_t;
+    result.structure_probe_uz = probe_uz;
     result.mode_table = mode_table;
     result.mic_table = mic_table;
     result.q_info = q_info;
@@ -241,6 +268,8 @@ function offline = try_load_java_exported_result(spec, data_dir, figures_dir, ex
     result.studies_rerun_in_matlab = false;
     result.solve_owner = "java_batch_csv";
     result.wallclock_export_s = toc(export_timer);
+
+    result = run_derived_metrics(data_dir, figures_dir, result, spec);
 
     offline.available = true;
     offline.result = result;
