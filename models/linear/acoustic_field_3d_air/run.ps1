@@ -8,7 +8,8 @@ param(
     [string]$OutputRoot = "",
     [ValidateRange(0, 65535)]
     [int]$LocalComsolPort = 0,
-    [switch]$SkipMatlabPostprocess
+    [switch]$SkipMatlabPostprocess,
+    [switch]$HonorConfigOverrides
 )
 
 Set-StrictMode -Version Latest
@@ -108,6 +109,7 @@ function Get-NormalizedParams {
         f_damp_low = $(if ($LeafMap.ContainsKey("f_damp_low")) { $LeafMap["f_damp_low"] } elseif ($LeafMap.ContainsKey("f_damp_ref")) { $LeafMap["f_damp_ref"] } else { "40[Hz]" })
         f_damp_high = $(if ($LeafMap.ContainsKey("f_damp_high")) { $LeafMap["f_damp_high"] } elseif ($LeafMap.ContainsKey("f_damp_ref")) { $LeafMap["f_damp_ref"] } else { "700[Hz]" })
         eigen_modes = $LeafMap["eigen_modes"]
+        eigen_shift = $(if ($LeafMap.ContainsKey("eigen_shift")) { $LeafMap["eigen_shift"] } else { "1000[Hz]" })
         time_end = $LeafMap["time_end"]
         time_step = $LeafMap["time_step"]
         mode_points = $LeafMap["mode_points"]
@@ -296,7 +298,7 @@ $logsDir = Join-Path $stableOutputBaseDir "logs"
 $defaultConfigPath = Join-Path $PSScriptRoot "config\params.json"
 $configPath = Resolve-OptionalPath -InputPath $ConfigPath -DefaultPath $defaultConfigPath -BaseDir $repoRoot
 $configObject = Read-JsonFile -Path $configPath
-$resolvedInfo = New-ResolvedLinearConfig -Config $configObject -ModelId "acoustic_field_3d_air" -Quality $Quality
+$resolvedInfo = New-ResolvedLinearConfig -Config $configObject -ModelId "acoustic_field_3d_air" -Quality $Quality -HonorConfigOverrides:$HonorConfigOverrides
 $resolvedConfig = $resolvedInfo.Config
 $selectedParams = Get-NormalizedParams -LeafMap (Get-LeafMap -Config $resolvedConfig)
 

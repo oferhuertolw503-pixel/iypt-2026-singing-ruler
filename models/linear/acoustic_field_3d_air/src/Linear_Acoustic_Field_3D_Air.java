@@ -45,6 +45,7 @@ public class Linear_Acoustic_Field_3D_Air {
     model.param().set("radiation_source_x", "L_free/2");
     model.param().set("radiation_source_y", "0[m]");
     model.param().set("radiation_source_z", "0[m]");
+    model.param().set("eigen_shift", "1000[Hz]");
 
     // __LINEAR_PARAM_BLOCK__
 
@@ -165,7 +166,7 @@ public class Linear_Acoustic_Field_3D_Air {
     model.study("std1").create("eig", "Eigenfrequency");
     model.study("std1").feature("eig").set("neigsactive", true);
     model.study("std1").feature("eig").set("neigs", "eigen_modes");
-    model.study("std1").feature("eig").set("shift", "1000[Hz]");
+    model.study("std1").feature("eig").set("shift", "eigen_shift");
     model.study("std1").feature("eig").setSolveFor("/physics/solid", true);
     model.study("std1").feature("eig").set("useadvanceddisable", true);
     model.study("std1").feature("eig").set("disabledphysics", new String[] { "solid/bndl1", "solid/lemm1/dmp1" });
