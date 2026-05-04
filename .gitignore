@@ -26,6 +26,7 @@ __pycache__/
 
 # Temporary / IDE
 .codex_tmp/
+.claude/*.lock
 debug.log
 
 # Office temp files

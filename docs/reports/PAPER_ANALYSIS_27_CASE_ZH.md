@@ -5,6 +5,8 @@
 > 分析方法：`matlab/report/paper_analysis_27_case.m`
 > 对应提交：本报告随 `Add paper analysis and physical conclusion report` 提交
 
+> **更新说明（2026-05-04）**：本文的材料音色段落和 `timbre_material_map.png` 属于早期 27 case 汇总口径。正式论文的材料音色结论已由增强 medium 双冲量仿真替代，详见 `TIMBRE_ENHANCED_MEDIUM_ANALYSIS_ZH.md` 和 `PAPER_DRAFT_RESULTS_DISCUSSION_ZH.md` 第 4 节。
+
 ---
 
 ## 1. 分析概述
