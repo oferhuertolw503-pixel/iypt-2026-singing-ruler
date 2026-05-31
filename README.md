@@ -148,9 +148,9 @@ the_singing_ruler/
 
 ## Knowledge Base
 
-The **project knowledge base** (theoretical derivations, paper drafts, experimental plans, literature research, agent context, handover prompts) is maintained **separately** in the Obsidian vault. See [CLAUDE.md](CLAUDE.md) for a full structure index and mapping between knowledge base documents and code modules.
+Detailed documentation (theoretical derivations, paper drafts, experimental plans, literature research) is maintained separately from this code repository.
 
-> Knowledge base is not part of this repository. It lives in the Obsidian vault and covers: theory derivation, simulation methodology, experimental design, paper drafts, PPT outlines, literature review, and AI collaboration workflows.
+> Knowledge base is not part of this repository.
 
 ## License
 
@@ -301,9 +301,9 @@ the_singing_ruler/
 
 ## 知识库
 
-**项目知识库**（理论推导、论文草稿、实验方案、文献研究、AI 协作工作流、交接文档）**独立维护**于 Obsidian 知识库中。结构索引见 [CLAUDE.md](CLAUDE.md)。
+详细文档（理论推导、论文草稿、实验方案、文献研究）独立维护，与代码仓库分离。
 
-> 知识库不属于此代码仓库。它位于 Obsidian 知识库中，涵盖：理论推导、仿真方法论、实验设计、论文草稿、PPT 大纲、文献综述和 AI 协作工作流。
+> 知识库不属于此代码仓库。
 
 ## 许可证
 
