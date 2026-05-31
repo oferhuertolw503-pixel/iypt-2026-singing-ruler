@@ -20,6 +20,7 @@ $syncMap = @(
     @{Src = "docs/04_报告与PPT/*.md";          Dst = "docs/04_报告与PPT/"},
     @{Src = "README.md";                    Dst = ""},
     @{Src = "CLAUDE.md";                    Dst = ""},
+    @{Src = "CLAUDE.md";                    Dst = ""},
     @{Src = "outputs/unified_v2_4mat/tables/conclusion_master_table.csv"; Dst = "outputs/unified_v2_4mat/tables/"},
     @{Src = "outputs/unified_v2_4mat/animation/*.gif";  Dst = "outputs/unified_v2_4mat/animation/"},
     @{Src = "outputs/steel_gnl_on_v2/tables/conclusion_master_table.csv";  Dst = "outputs/steel_gnl_on_v2/tables/"},
