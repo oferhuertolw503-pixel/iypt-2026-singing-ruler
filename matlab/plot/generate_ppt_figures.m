@@ -1,7 +1,7 @@
 %GENERATE_PPT_FIGURES  Generate all figures for PPT from unified_v2_4mat data.
 %   Output: outputs/ppt_figures/*.png (300 DPI, white background)
 
-proj = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+proj = fullfile(fileparts(mfilename('fullpath')), '..', '..');
 out_dir = fullfile(proj, 'outputs', 'ppt_figures');
 if ~isfolder(out_dir), mkdir(out_dir); end
 

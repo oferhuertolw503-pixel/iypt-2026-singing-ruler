@@ -16,7 +16,7 @@ function report = paper_analysis_27_case(proj_root, data_rel_root)
 %   No COMSOL, no raw CSV modification, no synthetic data.
 
     arguments
-        proj_root (1,:) char = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler'
+        proj_root (1,:) char = fullfile(fileparts(mfilename('fullpath')), '..', '..')
         data_rel_root (1,:) char = 'outputs/requested_3d_air_coarse_review_light'
     end
 

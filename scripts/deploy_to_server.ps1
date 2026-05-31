@@ -74,7 +74,7 @@ Write-Host "       Upload complete."
 if ($RunNow) {
     Write-Host "`n[3/4] Compiling and running on server..."
 
-    $envSetup = 'export PATH=~/jdk-11.0.27+6/bin:/disk/home/zhangzhenlei/Comsol/comsol61/multiphysics/bin:$PATH'
+    $envSetup = 'export PATH=~/jdk-11.0.27+6/bin:/path/to/comsol61/multiphysics/bin:$PATH'
 
     if ($Background) {
         # Run in background with nohup
@@ -92,7 +92,7 @@ if ($RunNow) {
     Write-Host "`n[3/4] Skipped (use -RunNow to compile and run on server)."
     Write-Host "       To run manually:"
     Write-Host "         ssh $Server"
-    Write-Host "         export PATH=~/jdk-11.0.27+6/bin:/disk/home/zhangzhenlei/Comsol/comsol61/multiphysics/bin:`$PATH"
+    Write-Host "         export PATH=~/jdk-11.0.27+6/bin:/path/to/comsol61/multiphysics/bin:`$PATH"
     Write-Host "         cd $RemoteWorkDir"
     Write-Host "         comsol compile Linear_Acoustic_Field_3D_Air.java"
     Write-Host "         comsol batch -inputfile Linear_Acoustic_Field_3D_Air.class -outputfile /tmp/acoustic_field_3d_air_${Quality}.mph"

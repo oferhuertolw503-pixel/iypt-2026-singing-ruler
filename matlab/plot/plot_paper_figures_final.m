@@ -1,6 +1,6 @@
 function plot_paper_figures_final()
 %PLOT_PAPER_FIGURES_FINAL 论文级图表：微软雅黑中文 + tex 数学公式，300 DPI
-    proj = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+    proj = fullfile(fileparts(mfilename('fullpath')), '..', '..');
     addpath(genpath(fullfile(proj, 'matlab')));
     T = readtable(fullfile(proj, 'outputs/requested_adaptive/tables/conclusion_master_table_corrected.csv'));
     out_dir = fullfile(proj, 'outputs/requested_adaptive/figures');

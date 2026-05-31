@@ -3,7 +3,7 @@
 %  consistent styling, 300 DPI export.
 clear; close all;
 
-proj = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+proj = fullfile(fileparts(mfilename('fullpath')), '..', '..');
 out_dir = fullfile(proj, 'outputs', 'ppt_figures');
 if ~isfolder(out_dir), mkdir(out_dir); end
 

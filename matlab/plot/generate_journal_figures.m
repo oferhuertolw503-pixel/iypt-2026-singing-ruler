@@ -3,7 +3,7 @@
 %  300 DPI, 1200x800 minimum. Chinese axis labels and legends.
 
 clear; close all; rng(2026);
-proj = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+proj = fullfile(fileparts(mfilename('fullpath')), '..', '..');
 out_dir = fullfile(proj, 'outputs', 'ppt_figures');
 if ~isfolder(out_dir), mkdir(out_dir); end
 addpath(fullfile(proj, 'matlab', 'core')); addpath(fullfile(proj, 'matlab', 'extract'));

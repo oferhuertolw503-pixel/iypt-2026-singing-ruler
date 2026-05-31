@@ -10,7 +10,7 @@ from pptx.enum.shapes import MSO_SHAPE
 from pathlib import Path
 import os
 
-PROJ = Path(r"C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler")
+PROJ = Path(__file__).parent.parent
 FIG_DIR = PROJ / "outputs" / "ppt_figures"
 OUT_PATH = PROJ / "ppt" / "尺子之歌_仿真补充.pptx"
 

@@ -2,7 +2,7 @@
 %   No toolboxes required — uses FFT-based band-pass filtering.
 %   Output: outputs/unified_v2_4mat/animation/ruler_vibration_steel.gif
 
-proj_root = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+proj_root = fullfile(fileparts(mfilename('fullpath')), '..', '..');
 material_name = 'steel';
 framerate = 25;
 duration_s = 0.3;

@@ -1,5 +1,5 @@
 function quick_conclusion()
-    proj = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+    proj = fullfile(fileparts(mfilename('fullpath')), '..', '..');
     addpath(genpath(fullfile(proj, 'matlab')));
     data_root = fullfile(proj, 'outputs/requested_adaptive/cases');
 

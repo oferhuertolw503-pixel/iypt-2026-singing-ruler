@@ -18,7 +18,7 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 
 import pandas as pd
 
-BASE = Path(r'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler')
+BASE = Path(__file__).parent.parent
 PPT_PATH = BASE / 'ppt/尺子之歌-正方匡大德.pptx'
 FIG_DIR = BASE / 'outputs/requested_adaptive/figures'
 

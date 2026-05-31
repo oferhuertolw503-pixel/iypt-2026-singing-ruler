@@ -152,4 +152,4 @@ python3 -B -m unittest discover -s tests -p "test_*.py"
 
 ---
 
-*参考: [MATLAB 后处理模块](../matlab/README.md) | [项目总文档](../docs/reports/PROJECT_MASTER_DOCUMENT_ZH.md)*
+*参考: [MATLAB 后处理模块](../matlab/README.md)*

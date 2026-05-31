@@ -4,7 +4,7 @@ function T_corrected = correct_frequencies_from_fft(proj_root, data_rel_root)
 %   与 COMSOL 特征值对比，替换被错误标记的低阶模态。
 
     arguments
-        proj_root (1,:) char = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler'
+        proj_root (1,:) char = fullfile(fileparts(mfilename('fullpath')), '..', '..')
         data_rel_root (1,:) char = 'outputs/requested_adaptive'
     end
 

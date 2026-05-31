@@ -1,5 +1,5 @@
 function replot_corrected_figures()
-    proj_root = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler';
+    proj_root = fullfile(fileparts(mfilename('fullpath')), '..', '..');
     data_rel = 'outputs/requested_adaptive';
     addpath(genpath(fullfile(proj_root, 'matlab')));
 

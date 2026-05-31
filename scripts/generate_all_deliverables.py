@@ -27,7 +27,7 @@ warnings.filterwarnings('ignore')
 # ============================================================
 # 全局配置
 # ============================================================
-BASE = Path(r'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler')
+BASE = Path(__file__).parent.parent
 CSV_PATH = BASE / 'outputs/requested_adaptive/tables/conclusion_master_table_corrected.csv'
 FIG_DIR = BASE / 'outputs/requested_adaptive/figures'
 TABLE_DIR = BASE / 'outputs/requested_adaptive/tables'

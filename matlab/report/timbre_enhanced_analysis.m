@@ -7,7 +7,7 @@ function report = timbre_enhanced_analysis(proj_root, data_rel_root)
 %   over existing outputs; it does not start COMSOL or modify raw CSV.
 
     arguments
-        proj_root (1, :) char = 'C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler'
+        proj_root (1, :) char = fullfile(fileparts(mfilename('fullpath')), '..', '..')
         data_rel_root (1, :) char = 'outputs/requested_timbre_complete_enhanced_medium'
     end
 

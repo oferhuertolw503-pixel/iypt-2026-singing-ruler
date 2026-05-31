@@ -22,12 +22,12 @@ the_singing_ruler/
 │   ├── extract/          # FFT、SPL、模态衰减、音色特征
 │   ├── plot/             # 论文级图表（9 张图，300 DPI）
 │   └── report/           # 批处理 + 结论表
-├── docs/                 # 设计文档、报告
-│   └── reports/          # PROJECT_MASTER_DOCUMENT_ZH.md 主文档
 ├── the_singing_ruler_unified/  # 统一仿真包（几何非线性 + 阻尼 + 冲量）
 ├── scripts/              # 部署脚本
 └── ppt/                  # 演示文稿素材
 ```
+
+> 📚 项目知识库（理论推导、论文草稿、实验方案、文献研究等）独立维护。结构索引见 [CLAUDE.md](CLAUDE.md)。
 
 ## 物理模型
 
@@ -36,8 +36,6 @@ the_singing_ruler/
 - **激励**: 半正弦脉冲 (Hertz 接触修正)
 - **非线性**: Green-Lagrange 几何非线性（非钢材料）
 - **求解**: Eigenfrequency → Structure Transient → Acoustics Transient
-
-详见 `docs/reports/PROJECT_MASTER_DOCUMENT_ZH.md`
 
 ## Project Progress
 
