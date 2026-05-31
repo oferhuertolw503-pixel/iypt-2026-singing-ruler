@@ -35,9 +35,9 @@ matlab/
   report/aggregate_conclusion_table.m    # 73 列主结论表
 scripts/                                # PowerShell 编排（已少用）
 docs/
-  reports/PROJECT_MASTER_DOCUMENT_ZH.md  # 论文级总文档
-  PACKAGES_README.md                     # 服务器包说明
-  HANDOVER_PROMPT.md                     # 新人接手文档
+  04_报告与PPT/PROJECT_MASTER_DOCUMENT_ZH.md  # 论文级总文档
+  00_项目导航/PACKAGES_README.md              # 服务器包说明
+  00_项目导航/HANDOVER_PROMPT.md              # 新人接手文档
 outputs/                                 # 仿真结果 CSV（不入 Git）
   requested_adaptive/                    # 27-case 全扫描
   materials_combined/                    # 阻尼+冲量联合修正
@@ -63,4 +63,4 @@ outputs/                                 # 仿真结果 CSV（不入 Git）
 - **非线性**: Green-Lagrange 几何非线性（非钢材料）
 - **求解**: Eigenfrequency → Structure Transient → Acoustics Transient
 
-详见 `docs/reports/PROJECT_MASTER_DOCUMENT_ZH.md`
+详见 `docs/04_报告与PPT/PROJECT_MASTER_DOCUMENT_ZH.md`

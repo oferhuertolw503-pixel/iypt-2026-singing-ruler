@@ -14,7 +14,10 @@ $PROJECT_ROOT = Split-Path -Parent $PSScriptRoot
 # ---- Paths to sync ----
 $syncMap = @(
     # Source (relative to project root)     -> Destination (relative to vault)
-    @{Src = "docs/reports/*.md";            Dst = "docs/reports/"},
+    @{Src = "docs/00_项目导航/*.md";           Dst = "docs/00_项目导航/"},
+    @{Src = "docs/01_理论推导/*.md";           Dst = "docs/01_理论推导/"},
+    @{Src = "docs/02_仿真方案/*.md";           Dst = "docs/02_仿真方案/"},
+    @{Src = "docs/04_报告与PPT/*.md";          Dst = "docs/04_报告与PPT/"},
     @{Src = "README.md";                    Dst = ""},
     @{Src = "CLAUDE.md";                    Dst = ""},
     @{Src = "outputs/unified_v2_4mat/tables/conclusion_master_table.csv"; Dst = "outputs/unified_v2_4mat/tables/"},
