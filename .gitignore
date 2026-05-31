@@ -45,3 +45,8 @@ Thumbs.db
 
 # Video / large media (local assets only)
 *.mp4
+
+.cursor/
+
+.vscode/
+MathWorks/
