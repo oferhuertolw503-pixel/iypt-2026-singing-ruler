@@ -39,6 +39,22 @@ the_singing_ruler/
 
 详见 `docs/reports/PROJECT_MASTER_DOCUMENT_ZH.md`
 
+## Project Progress
+
+### Completed ✅
+- **三层理论模型**：L1 Euler-Bernoulli → L2 Timoshenko+弹性夹持 → L3 Duffing+Rayleigh 声辐射
+- **COMSOL 仿真**：在 Linux 服务器全量验证，Java API 模型编译运行通过，5 种材料 × 多长度/厚度的参数扫描
+- **关键结论已验证**：
+  - f ∝ h/L² 在薄尺区成立（偏差 < 3%）
+  - 夹持刚度 K_θ ≈ 10⁴-10⁵ N·m/rad 时基频偏移 5-15%
+  - 敲击位置控制模态参与（末端/中点/1/3 处）
+  - 声辐射指向性：正面比侧面高 15-25dB
+  - 音色的材料依赖性（钢高 Q / 塑料低 Q / 木质中等）
+
+### Incomplete ❌
+- 非线性 L3 模型（Duffing+Rayleigh）的大振幅验证
+- 缎木和雪弗板弹性模量为文献估计而非实测
+
 ## 许可证
 
 MIT License — 详见 [LICENSE](LICENSE)
