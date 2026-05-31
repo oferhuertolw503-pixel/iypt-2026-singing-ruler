@@ -1,0 +1,66 @@
+{
+  "description": "Full 27-case requested 3D air-domain COMSOL run definition.",
+  "model_id": "linear_acoustic_field_3d_air",
+  "full_profile": {
+    "mesh_numelem": 120,
+    "mode_points": 241,
+    "time_end": "1[s]",
+    "time_step": "1e-4[s]"
+  },
+  "baseline": {
+    "L_free_cm": 20,
+    "b_cm": 3,
+    "h_mm": 2,
+    "x0_ratio": 0.8,
+    "J_Ns": 0.04
+  },
+  "materials": [
+    {
+      "key": "steel",
+      "name": "steel_ruler",
+      "rho": "7930[kg/m^3]",
+      "E": "193e9[Pa]",
+      "nu": "0.29",
+      "note": "baseline steel ruler"
+    },
+    {
+      "key": "pvc",
+      "name": "pvc",
+      "rho": "1380[kg/m^3]",
+      "E": "3.0e9[Pa]",
+      "nu": "0.38",
+      "note": "engineering approximation"
+    },
+    {
+      "key": "xuefu_board",
+      "name": "xuefu_board",
+      "rho": "700[kg/m^3]",
+      "E": "0.7e9[Pa]",
+      "nu": "0.35",
+      "note": "PVC foam board engineering approximation"
+    },
+    {
+      "key": "acrylic",
+      "name": "acrylic",
+      "rho": "1180[kg/m^3]",
+      "E": "3.2e9[Pa]",
+      "nu": "0.35",
+      "note": "PMMA engineering approximation"
+    },
+    {
+      "key": "satinwood",
+      "name": "satinwood",
+      "rho": "650[kg/m^3]",
+      "E": "10e9[Pa]",
+      "nu": "0.35",
+      "note": "orthotropy simplified to isotropic approximation"
+    }
+  ],
+  "scan_values": {
+    "L_free_cm": [10, 14, 18, 22, 26],
+    "b_cm": [1, 2, 3, 4, 5],
+    "h_mm": [1, 2, 3, 4, 5],
+    "x0_ratio": [0.25, 0.5, 0.75],
+    "J_Ns": [0.02, 0.04, 0.06, 0.08]
+  }
+}

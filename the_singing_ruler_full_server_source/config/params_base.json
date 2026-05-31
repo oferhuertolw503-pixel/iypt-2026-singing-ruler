@@ -1,0 +1,59 @@
+{
+  "model": "linear_acoustic_field_3d_air",
+  "description": "3D solid ruler with real 3D transient air-domain acoustics",
+  "comsol_version": "6.1",
+  "route": "java_matlab",
+  "modules": ["Structural Mechanics", "Acoustics"],
+  "geometry": {
+    "L_free": "0.20[m]",
+    "b": "0.03[m]",
+    "h": "0.002[m]"
+  },
+  "material": {
+    "rho": "7930[kg/m^3]",
+    "E": "193e9[Pa]",
+    "nu": "0.29"
+  },
+  "boundary": {
+    "root": "ideal_clamp",
+    "tip": "free"
+  },
+  "excitation": {
+    "mode": "impact",
+    "x0": "0.85*L_free",
+    "use_impulse": 1,
+    "J": "0.04[N*s]",
+    "tau_imp": "2e-3[s]",
+    "impact_patch_dx": "0.010[m]",
+    "impact_patch_dy": "0.006[m]",
+    "pulse_shape": "half_sine"
+  },
+  "damping": {
+    "zeta_struct": "0.015",
+    "f_damp_low": "40[Hz]",
+    "f_damp_high": "700[Hz]"
+  },
+  "studies": {
+    "eigen_modes": 6,
+    "time_end": "1[s]",
+    "time_step": "1e-4[s]"
+  },
+  "acoustics": {
+    "use_real_air_domain": true,
+    "air_shape": "sphere",
+    "air_radius": "0.12[m]",
+    "rho_air": "1.225[kg/m^3]",
+    "c_air": "343[m/s]",
+    "mic_x": "L_free/2",
+    "mic_y": "0[m]",
+    "mic_z": "0.02[m]",
+    "mic_offset_from_surface_m": "0.02[m]",
+    "mic_distances_from_surface_m": "0.02,0.04,0.06,0.08,0.10",
+    "radiation_source_x": "L_free/2",
+    "radiation_source_y": "0[m]",
+    "radiation_source_z": "0[m]"
+  },
+  "mesh": {
+    "numelem": 40
+  }
+}

@@ -7,7 +7,7 @@ You are verifying whether MATLAB can support the current Codex workflow without 
 Project root:
 
 ```text
-C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler
+C:\Users\<your-computer>\code\cupt\the_singing_ruler
 ```
 
 MATLAB installation:
@@ -25,7 +25,7 @@ D:\Program Files\Matlab R2025a\bin\matlab.exe
 MCP server binary:
 
 ```text
-C:\Users\OMEN.LAPTOP-8C8PH934\.codex\bin\matlab-mcp-core-server-win64.exe
+C:\Users\<your-computer>\.codex\bin\matlab-mcp-core-server-win64.exe
 ```
 
 ## Goal
@@ -72,7 +72,7 @@ disp(version);
 3. Run `check_matlab_code` on:
 
 ```text
-C:\Users\OMEN.LAPTOP-8C8PH934\code\cupt\the_singing_ruler\matlab\run_matlab_manifest.m
+C:\Users\<your-computer>\code\cupt\the_singing_ruler\matlab\run_matlab_manifest.m
 ```
 
 If these tools are not available, do not stop. Continue with batch fallback.
@@ -82,7 +82,7 @@ If these tools are not available, do not stop. Continue with batch fallback.
 Run:
 
 ```powershell
-& 'C:\Users\OMEN.LAPTOP-8C8PH934\.codex\bin\matlab-mcp-core-server-win64.exe' --version
+& 'C:\Users\<your-computer>\.codex\bin\matlab-mcp-core-server-win64.exe' --version
 ```
 
 Expected: the command prints a MathWorks MATLAB MCP Core Server version and exits successfully.
@@ -115,7 +115,7 @@ If this fails, classify the result as `BLOCKED`.
 Run:
 
 ```powershell
-& 'D:\Program Files\Matlab R2025a\bin\matlab.exe' -batch "cd('C:/Users/OMEN.LAPTOP-8C8PH934/code/cupt/the_singing_ruler'); addpath(genpath('matlab')); which run_matlab_manifest; checkcode('matlab/run_matlab_manifest.m')"
+& 'D:\Program Files\Matlab R2025a\bin\matlab.exe' -batch "cd('C:/Users/<your-computer>/code/cupt/the_singing_ruler'); addpath(genpath('matlab')); which run_matlab_manifest; checkcode('matlab/run_matlab_manifest.m')"
 ```
 
 Expected:

@@ -136,15 +136,6 @@ function result = run_beam_model_pipeline(spec)
     result = run_derived_metrics(data_dir, figures_dir, result, spec);
 end
 
-function tf = has_solution(model, tag)
-    tf = true;
-    try
-        model.sol(tag);
-    catch
-        tf = false;
-    end
-end
-
 function dataset_tag = resolve_mic_dataset_tag(model)
     dataset_tag = 'cptTip';
     try
@@ -168,11 +159,11 @@ function [studiesRerunInMatlab, didRetry] = rerun_studies_after_extract_failure(
 end
 
 function release_model_only(model)
+    import com.comsol.model.util.*
     try
         if ~isempty(model)
             modelTag = char(model.tag());
             if strlength(string(modelTag)) > 0
-                import com.comsol.model.util.*
                 ModelUtil.remove(modelTag);
             end
         end

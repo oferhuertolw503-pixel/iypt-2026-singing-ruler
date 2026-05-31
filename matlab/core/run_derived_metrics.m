@@ -21,6 +21,8 @@ function result = run_derived_metrics(data_dir, figures_dir, result, spec)
     if ~isempty(fieldnames(spec))
         result.derived_metrics_spec = spec;
     end
+    ensure_dir(data_dir);
+    ensure_dir(figures_dir);
 
     % --- Acoustic metrics ---
     if isfield(result, 'mic_t') && isfield(result, 'mic_p') && ...
@@ -108,6 +110,44 @@ function result = run_derived_metrics(data_dir, figures_dir, result, spec)
     end
     result.band_decay = decay;
     result.band_decay_meta = band_meta;
+
+    % --- Modal decay analysis ---
+    if isfield(result, 'mic_t') && isfield(result, 'mic_p') && ...
+            ~isempty(result.mic_t) && ~isempty(result.mic_p) && ...
+            isfield(result, 'freq_table') && istable(result.freq_table) && ...
+            height(result.freq_table) > 0
+
+        [modal_decay_table, modal_decay_summary] = compute_modal_decay(result.mic_t, result.mic_p, result.freq_table);
+        if istable(modal_decay_table) && height(modal_decay_table) > 0
+            writetable(modal_decay_table, fullfile(data_dir, 'modal_decay.csv'), 'Encoding', 'UTF-8');
+        end
+        result.modal_decay = modal_decay_table;
+        result.modal_decay_summary = modal_decay_summary;
+    else
+        result.modal_decay = table();
+        result.modal_decay_summary = struct();
+    end
+
+    % --- Mic sweep SPL vs distance ---
+    if isfield(result, 'mic_sweep') && ~isempty(result.mic_sweep)
+        n_sw = numel(result.mic_sweep);
+        sweep_spl = zeros(n_sw, 3);
+        for s = 1:n_sw
+            rms_pa = rms(result.mic_sweep(s).p);
+            peak_pa = max(abs(result.mic_sweep(s).p));
+            distance_m = NaN;
+            if isfield(result.mic_sweep, 'distance_m') && ~isempty(result.mic_sweep(s).distance_m)
+                distance_m = result.mic_sweep(s).distance_m;
+            end
+            sweep_spl(s, :) = [distance_m, ...
+                20*log10(max(rms_pa, 1e-12)/20e-6), ...
+                20*log10(max(peak_pa, 1e-12)/20e-6)];
+        end
+        sweep_tbl = array2table(sweep_spl, 'VariableNames', ...
+            {'distance_m', 'spl_rms_db', 'spl_peak_db'});
+        writetable(sweep_tbl, fullfile(data_dir, 'mic_sweep_spl.csv'), 'Encoding', 'UTF-8');
+        result.mic_sweep_spl = sweep_tbl;
+    end
 
     % --- Composite mode shapes overlay figure ---
     if isfield(result, 'mode_table') && istable(result.mode_table) && ...

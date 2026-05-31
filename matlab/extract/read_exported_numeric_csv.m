@@ -77,10 +77,16 @@ function names = infer_variable_names(path, num_cols)
             expected = {'t_s', 'force_z_N'};
         case 'mic_pressure_fft'
             expected = {'freq_hz', 'amp_pa'};
+        case 'mic_sweep_distances'
+            expected = {'sweep_index', 'distance_from_surface_m', 'mic_z_expr'};
         case 'mode_shapes'
             expected = [{'x_over_L'}, arrayfun(@(k) sprintf('w_mode%d', k), 1:max(num_cols - 1, 0), 'UniformOutput', false)];
         otherwise
-            expected = arrayfun(@(k) sprintf('col%d', k), 1:num_cols, 'UniformOutput', false);
+            if startsWith(lower(stem), 'mic_pressure_timeseries_sweep_')
+                expected = {'t_s', 'p_pa'};
+            else
+                expected = arrayfun(@(k) sprintf('col%d', k), 1:num_cols, 'UniformOutput', false);
+            end
     end
 
     if numel(expected) < num_cols

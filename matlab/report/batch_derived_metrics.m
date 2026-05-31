@@ -63,6 +63,7 @@ function report = batch_derived_metrics(proj_root, data_rel_root)
         data_dir = fullfile(case_dir, 'data');
         figures_dir = fullfile(case_dir, 'figures');
         [group_name, param_name] = parse_case_path(cr);
+        ensure_dir(figures_dir);
 
         fprintf('[%d/%d] %s (%s/%s) ... ', i, n_cases, cr, group_name, param_name);
 
@@ -75,7 +76,7 @@ function report = batch_derived_metrics(proj_root, data_rel_root)
 
         % Run derived metrics
         try
-            result = run_derived_metrics(data_dir, figures_dir, result);
+            run_derived_metrics(data_dir, figures_dir, result);
             fprintf('derived OK, ');
         catch ex
             fprintf('DERIVED FAIL: %s\n', ex.message);
@@ -85,7 +86,16 @@ function report = batch_derived_metrics(proj_root, data_rel_root)
         pause(0.5);  % filesystem flush
 
         % Validate
-        vr = validate_derived_metrics_output(case_dir, RequirePrecision=true);
+        try
+            vr = validate_derived_metrics_output(case_dir, RequirePrecision=true);
+        catch ex
+            fprintf('VALIDATION FAIL: %s\n', ex.message);
+            csv_rows(i, :) = {cr, group_name, param_name, ...
+                false, false, ...
+                'validation_error', false, ...
+                NaN, NaN, NaN, NaN, NaN, '', NaN, NaN};
+            continue;
+        end
 
         % Collect results
         per_case(i).root = cr;
@@ -258,6 +268,34 @@ function result = load_case_data(data_dir)
     result.mode_table = mode_table;
     result.mic_t = mic_table.t_s;
     result.mic_p = mic_table.p_pa;
+
+    % Load mic sweep files (mic_pressure_timeseries_sweep_01..10.csv)
+    sweep_files = dir(fullfile(data_dir, 'mic_pressure_timeseries_sweep_*.csv'));
+    if ~isempty(sweep_files)
+        n_sweep = numel(sweep_files);
+        mic_sweep = struct('label', cell(n_sweep, 1), 't', cell(n_sweep, 1), 'p', cell(n_sweep, 1), ...
+            'distance_m', cell(n_sweep, 1));
+        for s = 1:n_sweep
+            sw_tbl = read_exported_numeric_csv(fullfile(data_dir, sweep_files(s).name));
+            mic_sweep(s).label = sweep_files(s).name;
+            mic_sweep(s).t = sw_tbl.t_s;
+            mic_sweep(s).p = sw_tbl.p_pa;
+        end
+        % Load distance metadata if available
+        dist_path = fullfile(data_dir, 'mic_sweep_distances.csv');
+        if isfile(dist_path)
+            dist_tbl = read_exported_numeric_csv(dist_path);
+            for s = 1:min(n_sweep, height(dist_tbl))
+                mic_sweep(s).distance_m = dist_tbl.distance_from_surface_m(s);
+            end
+        end
+        for s = 1:n_sweep
+            if isempty(mic_sweep(s).distance_m)
+                mic_sweep(s).distance_m = NaN;
+            end
+        end
+        result.mic_sweep = mic_sweep;
+    end
 end
 
 % --- Write summary report ---

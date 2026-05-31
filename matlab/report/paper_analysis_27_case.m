@@ -429,9 +429,9 @@ function t = make_steel_scan_trends(data)
         pv = d.param_value;
 
         if min(pv) ~= max(pv)
-            monotonic_spl = all(diff(spl) > -0.1);
+            monotonic_spl = all(diff(spl) > -0.1); %#ok<NASGU>
         else
-            monotonic_spl = true;
+            monotonic_spl = true; %#ok<NASGU>
         end
         f_range = sprintf('%.1f \\rightarrow %.1f Hz', f(1), f(end));
         spl_range = sprintf('%.1f \\rightarrow %.1f dB', spl(1), spl(end));
