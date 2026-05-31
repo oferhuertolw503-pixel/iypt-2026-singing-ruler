@@ -19,11 +19,18 @@ function Resolve-ComsolBin {
         return (Resolve-Path -LiteralPath $InputPath).Path
     }
 
-    $candidates = @(
-        "D:\Program Files\COMSOL64\Multiphysics\bin\win64",
-        "D:\Program Files\comsol6.4\COMSOL64\Multiphysics\bin\win64",
-        "D:\Program Files\comsol6.3\COMSOL63\Multiphysics\bin\win64"
-    )
+    $candidates = @()
+    # Env-var overrides (set COMSOL_ROOT or COMSOL_BIN to customize install location)
+    if (-not [string]::IsNullOrWhiteSpace($env:COMSOL_ROOT)) {
+        $candidates += Join-Path $env:COMSOL_ROOT "bin\win64"
+    }
+    if (-not [string]::IsNullOrWhiteSpace($env:COMSOL_BIN)) {
+        $candidates += $env:COMSOL_BIN
+    }
+    # Hardcoded fallbacks (commented -- originals preserved for reference):
+    # "D:\Program Files\COMSOL64\Multiphysics\bin\win64",
+    # "D:\Program Files\comsol6.4\COMSOL64\Multiphysics\bin\win64",
+    # "D:\Program Files\comsol6.3\COMSOL63\Multiphysics\bin\win64"
 
     foreach ($candidate in $candidates) {
         if (Test-Path (Join-Path $candidate "comsolcompile.exe")) {
@@ -76,7 +83,7 @@ function Resolve-MatlabExe {
     $tips = @(
         "MATLAB executable not found. Try one of the following:",
         "  1. Set the TSR_MATLAB_EXE environment variable to the full path of matlab.exe",
-        "  2. Pass -MatlabExe 'C:\Program Files\MATLAB\R2025a\bin\matlab.exe' when calling the script",
+        "  2. Set TSR_MATLAB_EXE or pass -MatlabExe with the full path to matlab.exe",
         "  3. Verify MATLAB is installed and the version folder matches one of the searched years"
     )
     throw ($tips -join [Environment]::NewLine)
