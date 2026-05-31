@@ -1,9 +1,0 @@
-/.bin
-/cover.out
-/vendor
-/.env
-AGENTS.md
-CLAUDE.md
-.agents
-.claude
-matlab/matlab_mcp_toolkit/mcp/+matlab_mcp/

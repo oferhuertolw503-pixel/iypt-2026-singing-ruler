@@ -1,7 +1,0 @@
-{
-  "amp.mcpServers": {
-    "matlab": {
-      "command": "/path/to/matlab-mcp-core-server"
-    }
-  }
-}
