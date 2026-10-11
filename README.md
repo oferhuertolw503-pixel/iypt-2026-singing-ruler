@@ -38,7 +38,6 @@ matlab -batch "run('plot/plot_paper_figures_final.m')"
 
 ## Physics Overview
 
-**What happens when you strike a clamped ruler?**
 
 1. **Mechanical vibration**: The ruler (a 3D cantilever beam) is struck by a pulsed force. It vibrates in its eigenmodes — bending, torsional, and axial.
 2. **Sound radiation**: The vibrating surface displaces adjacent air molecules, creating pressure waves that propagate outward as sound.
